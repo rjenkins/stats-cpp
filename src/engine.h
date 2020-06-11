@@ -89,7 +89,7 @@ public:
         Set(name, t, noTags);
     }
 
-    // Adds to a Counter, accepts integers or floats, with variadic Tags
+    // Sets a Gauge accepts integers or floats, with variadic Tags
     template<typename T, typename std::enable_if<std::is_arithmetic<T>::value>::type * = nullptr, typename... Ts>
     void Set(const std::string &name, const T &t, Ts... tags) {
         std::vector<Tag> tv;
@@ -111,7 +111,7 @@ public:
     void Observe(const std::string &name, const T &t) {
         Observe(name, t, noTags);
     }
-    // Adds to a Counter, accepts integers or floats, with variadic Tags
+    // Observers integers or floats, with variadic Tags
     template<typename T, typename std::enable_if<std::is_arithmetic<T>::value>::type * = nullptr, typename... Ts>
     void Observe(const std::string &name, const T &t, Ts... tags) {
         std::vector<Tag> tv;
@@ -121,6 +121,7 @@ public:
         }
         Observe(name, t, tv);
     }
+    // Observers integers or floats, with vector of Tags
     template<typename T, typename std::enable_if<std::is_arithmetic<T>::value>::type * = nullptr>
     void Observe(const std::string &name, const T &t, const std::vector<Tag> &tags) {
         measure(system_clock::now(), name, t, Histogram, tags);
