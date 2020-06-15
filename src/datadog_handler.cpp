@@ -13,7 +13,7 @@ void DatadogHandler::HandleMeasures(std::unique_ptr<Measure> measure) {
     std::ostringstream output;
 
     output << measure->name << ":" << measure->GetValue();
-    switch(measure->type) {
+    switch (measure->type) {
         case MetricTypes::Counter:
             output << "|c";
             break;
@@ -32,23 +32,24 @@ void DatadogHandler::HandleMeasures(std::unique_ptr<Measure> measure) {
     if (measure->tags.size()) {
         output << "|#";
         auto tagCount = measure->tags.size();
-        for(int i=0; i<tagCount; i++) {
+        for (int i = 0; i < tagCount; i++) {
             output << measure->tags[i].name << ":" << measure->tags[i].value;
-            if (tagCount > 1 && i < tagCount -1) {
+            if (tagCount > 1 && i < tagCount - 1) {
                 output << ",";
             }
         }
     }
 
-    spdlog::info(output.str());
+    int ret = writer->Write(output.str());
+    spdlog::debug("writer returned: {} for {}", ret, output.str());
 
-//    if (!global_tags_str.empty()) {
-//        if (!tagging) {
-//            statd << "|#" ;
-//        } else {
-//            statd << "," ;
-//        }
-//        statd << global_tags_str;
-//    }
+    //    if (!global_tags_str.empty()) {
+    //        if (!tagging) {
+    //            statd << "|#" ;
+    //        } else {
+    //            statd << "," ;
+    //        }
+    //        statd << global_tags_str;
+    //    }
     //return output.str();
 }
