@@ -14,9 +14,9 @@ public:
     static const std::string defaultHost;
     static const uint32_t defaultPort = 8125;
 
-    DatadogHandler() : DatadogHandler(defaultHost, 8125) {}
+    DatadogHandler() : DatadogHandler(defaultHost, defaultPort) {}
     DatadogHandler(const std::string &host, const uint32_t &port) : writer(make_unique<DatadogUDPWriter>(host, port)) {}
-    explicit DatadogHandler(const std::string &host) : DatadogHandler(host, 8125) {}
+    explicit DatadogHandler(const std::string &host) : DatadogHandler(host, defaultPort) {}
     explicit DatadogHandler(std::unique_ptr<Writer> writer) : writer(std::move(writer)){};
     void HandleMeasures(std::unique_ptr<Measure> measure) override;
 
