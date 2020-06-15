@@ -26,6 +26,8 @@ class Engine {
 public:
     // Constructors
     //
+    // Create and engine with an empty prefix
+    Engine() = default;
     // Create an engine and assign a prefix
     explicit Engine(const char *prefix) : prefix(prefix) {}
     // Create an engine and assign a prefix
@@ -137,12 +139,24 @@ private:
     // Private Functions
     template<typename T, typename std::enable_if<std::is_integral<T>::value>::type * = nullptr>
     void measure(const time_point<high_resolution_clock> &observedTime, const std::string &name, const T &value, const MetricTypes::MetricType &type, const std::vector<Tag> &tags) {
+        if (!prefix.empty()) {
+            auto fname = prefix + ".";
+            fname += name;
+            sendMeasure(std::make_unique<DoubleMeasure>(observedTime, fname, type, tags, value));
+            return;
+        }
         sendMeasure(std::make_unique<IntegerMeasure>(observedTime, name, type, tags, value));
     }
 
     // Private Functions
     template<typename T, typename std::enable_if<std::is_floating_point<T>::value>::type * = nullptr>
     void measure(const time_point<high_resolution_clock> &observedTime, const std::string &name, const T &value, const MetricTypes::MetricType &type, const std::vector<Tag> &tags) {
+        if (!prefix.empty()) {
+            auto fname = prefix + ".";
+            fname += name;
+            sendMeasure(std::make_unique<DoubleMeasure>(observedTime, fname, type, tags, value));
+            return;
+        }
         sendMeasure(std::make_unique<DoubleMeasure>(observedTime, name, type, tags, value));
     }
 

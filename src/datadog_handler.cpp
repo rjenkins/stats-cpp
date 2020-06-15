@@ -6,6 +6,7 @@
 #include <sstream>
 
 const std::string DatadogHandler::defaultHost = "127.0.0.1";
+const uint32_t DatadogHandler::defaultPort = 8125;
 
 // <METRIC_NAME>:<VALUE>|<TYPE>|@<SAMPLE_RATE>|#<TAG_KEY_1>:<TAG_VALUE_1>,<TAG_2>
 // Example: users.online:1|c|@0.5|#country:china

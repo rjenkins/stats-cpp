@@ -12,7 +12,7 @@
 class DatadogHandler : public Handler {
 public:
     static const std::string defaultHost;
-    static const uint32_t defaultPort = 8125;
+    static const uint32_t defaultPort;
 
     DatadogHandler() : DatadogHandler(defaultHost, defaultPort) {}
     DatadogHandler(const std::string &host, const uint32_t &port) : writer(std::make_unique<DatadogUDPWriter>(host, port)) {}

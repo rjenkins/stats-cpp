@@ -30,4 +30,23 @@ add_subdirectory(test)
 add_subdirectory(lib/googletest)
 add_subdirectory(lib/spdlog)
 
+set(INSTALL_HEADERS src/engine.h
+        src/handler.h
+        src/datadog_handler.h
+        src/print_handler.h
+        src/stats.h
+        src/datadog_udp_writer.h
+        src/tag.h
+        src/measure.h
+        src/metric_type.h
+        src/writer.h)
+
+set_target_properties(stats PROPERTIES PUBLIC_HEADER "${INSTALL_HEADERS}")
+INSTALL(TARGETS stats
+        ARCHIVE DESTINATION /usr/local/lib
+        LIBRARY DESTINATION /usr/local/lib
+        PUBLIC_HEADER DESTINATION /usr/local/include/stats-cpp)
+
+INSTALL(DIRECTORY lib/spdlog/include/spdlog DESTINATION /usr/local/include/spdlog)
+
 
