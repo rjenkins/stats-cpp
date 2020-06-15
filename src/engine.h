@@ -142,7 +142,7 @@ private:
         if (!prefix.empty()) {
             auto fname = prefix + ".";
             fname += name;
-            sendMeasure(std::make_unique<DoubleMeasure>(observedTime, fname, type, tags, value));
+            sendMeasure(std::make_unique<IntegerMeasure>(observedTime, fname, type, tags, value));
             return;
         }
         sendMeasure(std::make_unique<IntegerMeasure>(observedTime, name, type, tags, value));

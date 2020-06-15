@@ -15,6 +15,9 @@ public:
     Tag(std::string  name, std::string  value) : name(std::move(name)), value(std::move(value)){
         spdlog::debug("in tag constructor");
     }
+    ~Tag() {
+        spdlog::debug("in tag destructor");
+    }
     Tag(const Tag& other) : name(other.name), value(other.value){
         spdlog::debug("in tag copy constructor");
     }

@@ -40,6 +40,9 @@ public:
         : Measure(time, name, type, tags), value(value) {
         spdlog::debug("in DoubleMeasure constructor");
     }
+    ~DoubleMeasure() override {
+        spdlog::debug("in DoubleMeasure destructor");
+    }
     void Print() const override {
         spdlog::info("name: {}, type: {}, time: {}, value: {}", this->name, this->type, system_clock::to_time_t(this->time), this->value);
     }
@@ -54,6 +57,9 @@ public:
     IntegerMeasure(const time_point<high_resolution_clock> &time, const std::string &name, const MetricType &type, const std::vector<Tag> &tags, const int64_t &value)
         : Measure(time, name, type, tags), value(value) {
         spdlog::debug("in IntegerMeasure constructor");
+    }
+    ~IntegerMeasure() override {
+        spdlog::debug("in IntegerMeasure destructor");
     }
     void Print() const override {
         spdlog::info("name: {}, type: {}, time: {}, value: {}", this->name, this->type, system_clock::to_time_t(this->time), this->value);
