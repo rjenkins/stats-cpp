@@ -22,6 +22,9 @@ public:
         : time(time), name(std::move(name)), type(type), rate(1.0f), tags(std::move(tags)) {
         spdlog::debug("in measure constructor");
     }
+    virtual ~Measure() {
+        spdlog::debug("in Measure destructor");
+    }
     const time_point<high_resolution_clock> time;
     const std::string name;
     const MetricType type;

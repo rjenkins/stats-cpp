@@ -343,6 +343,11 @@ TEST(Engine, testObserveTagsVector) {
     ASSERT_EQ("World", im->tags[1].value);
 }
 
+TEST(Engine, testPrintHandler) {
+    Engine e("printHandlerTest", std::move(std::make_unique<PrintHandler>()));
+    e.Add("foo", 5.5, Tag("Hello", "World"));
+}
+
 TEST(Engine, testDDHandler) {
     Engine e("test", std::move(std::make_unique<DatadogHandler>()));
     e.Incr("foo", Tag("foo", "bar"));
