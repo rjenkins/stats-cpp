@@ -54,7 +54,7 @@ TEST(Engine, testIncrNoTags) {
     auto *th = dynamic_cast<TestHandler *>(h.get());
     ASSERT_EQ(1, th->measures.size());
     auto *im = dynamic_cast<IntegerMeasure *>(th->measures[0].get());
-    ASSERT_EQ("foo", im->name);
+    ASSERT_EQ("test.foo", im->name);
     ASSERT_EQ(MetricType::Counter, im->type);
     ASSERT_EQ(1, im->rate);
     ASSERT_EQ(1, im->value);
@@ -67,7 +67,7 @@ TEST(Engine, testIncrTags) {
     auto *th = dynamic_cast<TestHandler *>(h.get());
     ASSERT_EQ(1, th->measures.size());
     auto *im = dynamic_cast<IntegerMeasure *>(th->measures[0].get());
-    ASSERT_EQ("foo", im->name);
+    ASSERT_EQ("test.foo", im->name);
     ASSERT_EQ(MetricType::Counter, im->type);
     ASSERT_EQ(1, im->rate);
     ASSERT_EQ(1, im->value);
@@ -89,7 +89,7 @@ TEST(Engine, testIncrVectorTags) {
     auto *th = dynamic_cast<TestHandler *>(h.get());
     ASSERT_EQ(1, th->measures.size());
     auto *im = dynamic_cast<IntegerMeasure *>(th->measures[0].get());
-    ASSERT_EQ("foo", im->name);
+    ASSERT_EQ("test.foo", im->name);
     ASSERT_EQ(MetricType::Counter, im->type);
     ASSERT_EQ(1, im->rate);
     ASSERT_EQ(1, im->value);
@@ -107,7 +107,7 @@ TEST(Engine, testAddNoTags) {
     auto *th = dynamic_cast<TestHandler *>(h.get());
     ASSERT_EQ(1, th->measures.size());
     auto *im = dynamic_cast<IntegerMeasure *>(th->measures[0].get());
-    ASSERT_EQ("foo", im->name);
+    ASSERT_EQ("test.foo", im->name);
     ASSERT_EQ(MetricType::Counter, im->type);
     ASSERT_EQ(1, im->rate);
     ASSERT_EQ(100000000, im->value);
@@ -121,7 +121,7 @@ TEST(Engine, testAddInteger) {
     auto *th = dynamic_cast<TestHandler *>(h.get());
     ASSERT_EQ(1, th->measures.size());
     auto *im = dynamic_cast<IntegerMeasure *>(th->measures[0].get());
-    ASSERT_EQ("foo", im->name);
+    ASSERT_EQ("test.foo", im->name);
     ASSERT_EQ(MetricType::Counter, im->type);
     ASSERT_EQ(1, im->rate);
     ASSERT_EQ(100000000, im->value);
@@ -137,7 +137,7 @@ TEST(Engine, testAddDouble) {
     auto *th = dynamic_cast<TestHandler *>(h.get());
     ASSERT_EQ(1, th->measures.size());
     auto *im = dynamic_cast<DoubleMeasure *>(th->measures[0].get());
-    ASSERT_EQ("foo", im->name);
+    ASSERT_EQ("test.foo", im->name);
     ASSERT_EQ(MetricType::Counter, im->type);
     ASSERT_EQ(1, im->rate);
     ASSERT_EQ(5.5f, im->value);
@@ -155,7 +155,7 @@ TEST(Engine, testAddIntThenDouble) {
     auto *th = dynamic_cast<TestHandler *>(h.get());
     ASSERT_EQ(2, th->measures.size());
     auto *im = dynamic_cast<IntegerMeasure *>(th->measures[0].get());
-    ASSERT_EQ("foo", im->name);
+    ASSERT_EQ("test.foo", im->name);
     ASSERT_EQ(MetricType::Counter, im->type);
     ASSERT_EQ(1, im->rate);
     ASSERT_EQ(5, im->value);
@@ -163,7 +163,7 @@ TEST(Engine, testAddIntThenDouble) {
     ASSERT_EQ("An", im->tags[0].name);
     ASSERT_EQ("Integer", im->tags[0].value);
     auto *dm = dynamic_cast<DoubleMeasure *>(th->measures[1].get());
-    ASSERT_EQ("foo", dm->name);
+    ASSERT_EQ("test.foo", dm->name);
     ASSERT_EQ(MetricType::Counter, dm->type);
     ASSERT_EQ(1, dm->rate);
     ASSERT_EQ(5.5, dm->value);
@@ -179,7 +179,7 @@ TEST(Engine, testSetInt) {
     auto *th = dynamic_cast<TestHandler *>(h.get());
     ASSERT_EQ(1, th->measures.size());
     auto *im = dynamic_cast<IntegerMeasure *>(th->measures[0].get());
-    ASSERT_EQ("gauge.value", im->name);
+    ASSERT_EQ("test.gauge.value", im->name);
     ASSERT_EQ(MetricType::Gauge, im->type);
     ASSERT_EQ(1, im->rate);
     ASSERT_EQ(100, im->value);
@@ -193,7 +193,7 @@ TEST(Engine, testSetIntTags) {
     auto *th = dynamic_cast<TestHandler *>(h.get());
     ASSERT_EQ(1, th->measures.size());
     auto *im = dynamic_cast<IntegerMeasure *>(th->measures[0].get());
-    ASSERT_EQ("gauge.value", im->name);
+    ASSERT_EQ("test.gauge.value", im->name);
     ASSERT_EQ(MetricType::Gauge, im->type);
     ASSERT_EQ(1, im->rate);
     ASSERT_EQ(100, im->value);
@@ -213,7 +213,7 @@ TEST(Engine, testSetIntTagVector) {
     auto *th = dynamic_cast<TestHandler *>(h.get());
     ASSERT_EQ(1, th->measures.size());
     auto *im = dynamic_cast<IntegerMeasure *>(th->measures[0].get());
-    ASSERT_EQ("gauge.value", im->name);
+    ASSERT_EQ("test.gauge.value", im->name);
     ASSERT_EQ(MetricType::Gauge, im->type);
     ASSERT_EQ(1, im->rate);
     ASSERT_EQ(100, im->value);
@@ -231,7 +231,7 @@ TEST(Engine, testSetDouble) {
     auto *th = dynamic_cast<TestHandler *>(h.get());
     ASSERT_EQ(1, th->measures.size());
     auto *im = dynamic_cast<DoubleMeasure *>(th->measures[0].get());
-    ASSERT_EQ("gauge.value", im->name);
+    ASSERT_EQ("test.gauge.value", im->name);
     ASSERT_EQ(MetricType::Gauge, im->type);
     ASSERT_EQ(1, im->rate);
     ASSERT_EQ(100.0005, im->value);
@@ -245,7 +245,7 @@ TEST(Engine, testSetDoubleTags) {
     auto *th = dynamic_cast<TestHandler *>(h.get());
     ASSERT_EQ(1, th->measures.size());
     auto *im = dynamic_cast<DoubleMeasure *>(th->measures[0].get());
-    ASSERT_EQ("gauge.value", im->name);
+    ASSERT_EQ("test.gauge.value", im->name);
     ASSERT_EQ(MetricType::Gauge, im->type);
     ASSERT_EQ(1, im->rate);
     ASSERT_EQ(100.0005, im->value);
@@ -266,7 +266,7 @@ TEST(Engine, testSetDoubleTagsVector) {
     auto *th = dynamic_cast<TestHandler *>(h.get());
     ASSERT_EQ(1, th->measures.size());
     auto *im = dynamic_cast<DoubleMeasure *>(th->measures[0].get());
-    ASSERT_EQ("gauge.value", im->name);
+    ASSERT_EQ("test.gauge.value", im->name);
     ASSERT_EQ(MetricType::Gauge, im->type);
     ASSERT_EQ(1, im->rate);
     ASSERT_EQ(100.0005, im->value);
@@ -284,7 +284,7 @@ TEST(Engine, testObserveNoTagsInteger) {
     auto *th = dynamic_cast<TestHandler *>(h.get());
     ASSERT_EQ(1, th->measures.size());
     auto *im = dynamic_cast<IntegerMeasure *>(th->measures[0].get());
-    ASSERT_EQ("histo.value", im->name);
+    ASSERT_EQ("test.histo.value", im->name);
     ASSERT_EQ(MetricType::Histogram, im->type);
     ASSERT_EQ(1, im->rate);
     ASSERT_EQ(42, im->value);
@@ -298,7 +298,7 @@ TEST(Engine, testObserveNoTagsDouble) {
     auto *th = dynamic_cast<TestHandler *>(h.get());
     ASSERT_EQ(1, th->measures.size());
     auto *im = dynamic_cast<DoubleMeasure *>(th->measures[0].get());
-    ASSERT_EQ("histo.value", im->name);
+    ASSERT_EQ("test.histo.value", im->name);
     ASSERT_EQ(MetricType::Histogram, im->type);
     ASSERT_EQ(1, im->rate);
     ASSERT_EQ(3.14, im->value);
@@ -312,7 +312,7 @@ TEST(Engine, testObserveTags) {
     auto *th = dynamic_cast<TestHandler *>(h.get());
     ASSERT_EQ(1, th->measures.size());
     auto *im = dynamic_cast<DoubleMeasure *>(th->measures[0].get());
-    ASSERT_EQ("histo.value", im->name);
+    ASSERT_EQ("test.histo.value", im->name);
     ASSERT_EQ(MetricType::Histogram, im->type);
     ASSERT_EQ(1, im->rate);
     ASSERT_EQ(3.14, im->value);
@@ -332,7 +332,7 @@ TEST(Engine, testObserveTagsVector) {
     auto *th = dynamic_cast<TestHandler *>(h.get());
     ASSERT_EQ(1, th->measures.size());
     auto *im = dynamic_cast<DoubleMeasure *>(th->measures[0].get());
-    ASSERT_EQ("histo.value", im->name);
+    ASSERT_EQ("test.histo.value", im->name);
     ASSERT_EQ(MetricType::Histogram, im->type);
     ASSERT_EQ(1, im->rate);
     ASSERT_EQ(3.14, im->value);
