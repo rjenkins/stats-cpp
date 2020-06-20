@@ -6,6 +6,7 @@
 #include "test_handler.h"
 #include "gtest/gtest.h"
 #include <datadog_handler.h>
+#include <stats.h>
 
 TEST(Engine, testConstructNoHandler) {
     Engine e("foo");
@@ -341,6 +342,12 @@ TEST(Engine, testObserveTagsVector) {
     ASSERT_EQ("Bar", im->tags[0].value);
     ASSERT_EQ("Hello", im->tags[1].name);
     ASSERT_EQ("World", im->tags[1].value);
+}
+
+TEST(Engine, testStatsSetPrefix) {
+    Stats::SetPrefix("default");
+    Stats::AddHandler(std::move(std::make_unique<PrintHandler>()));
+    Stats::Incr("foo", Tag("test", "123"));
 }
 
 TEST(Engine, testPrintHandler) {

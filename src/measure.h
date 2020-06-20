@@ -7,7 +7,6 @@
 
 #include "metric_type.h"
 #include "spdlog/spdlog.h"
-#include "tag.h"
 #include <chrono>
 #include <string>
 #include <utility>
@@ -25,6 +24,16 @@ public:
     virtual ~Measure() {
         spdlog::debug("in Measure destructor");
     }
+
+    void printTags() const {
+        if (!tags.empty()) {
+            spdlog::info("tags:");
+            for (const auto &t : tags) {
+                spdlog::info("name: {} value: {}", t.name, t.value);
+            }
+        }
+    }
+
     const time_point<high_resolution_clock> time;
     const std::string name;
     const MetricType type;
@@ -45,6 +54,7 @@ public:
     }
     void Print() const override {
         spdlog::info("name: {}, type: {}, time: {}, value: {}", this->name, this->type, system_clock::to_time_t(this->time), this->value);
+        printTags();
     }
     std::string GetValue() override {
         return std::to_string(value);
@@ -63,6 +73,7 @@ public:
     }
     void Print() const override {
         spdlog::info("name: {}, type: {}, time: {}, value: {}", this->name, this->type, system_clock::to_time_t(this->time), this->value);
+        printTags();
     }
     std::string GetValue() override {
         return std::to_string(value);

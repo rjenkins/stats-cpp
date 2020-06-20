@@ -28,4 +28,6 @@ public:
     std::string value;
 };
 
+
+
 #endif//STATS_CPP_TAG_H

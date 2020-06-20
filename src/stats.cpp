@@ -1,5 +1,3 @@
 #include "stats.h"
 
-#include <iostream>
-
-
+Engine Stats::engine = Engine();
