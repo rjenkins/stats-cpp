@@ -9,7 +9,6 @@
 #include "measure.h"
 
 
-// Todo rework print handler to just print measures from overridden <<
 class PrintHandler : public Handler {
 public:
     PrintHandler() = default;

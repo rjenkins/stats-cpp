@@ -26,7 +26,7 @@ class Engine {
 public:
     // Constructors
     //
-    // Create and engine with an empty prefix
+    // Create an engine with an empty prefix
     Engine() = default;
     // Create an engine and assign a prefix
     explicit Engine(const char *prefix) : prefix(prefix) {}
@@ -163,6 +163,12 @@ private:
     void sendMeasure(std::unique_ptr<Measure> m) {
         for (const auto &h : handlers) {
             h->HandleMeasures(std::move(m));
+        }
+    }
+
+    void sendMeasure(const Measure& m) {
+        for (const auto &h : handlers) {
+            h->HandleMeasures(m);
         }
     }
 };

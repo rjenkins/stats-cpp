@@ -19,6 +19,7 @@ Engine::Engine(const char *prefix, std::unique_ptr<Handler> handler) : prefix(pr
 Engine::Engine(const char *prefix, std::vector<std::unique_ptr<Handler>> &handlers) : prefix(std::move(prefix)), handlers(std::move(handlers)) {}
 
 void Engine::RegisterHandler(std::unique_ptr<Handler> handler) {
+    // todo note about thread safety
     handlers.push_back(std::move(handler));
 }
 void Engine::Incr(const std::string &name, const std::vector<Tag> &tags) {
