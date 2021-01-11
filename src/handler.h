@@ -15,7 +15,6 @@
 
 class Handler {
 public:
-    virtual void HandleMeasures(std::unique_ptr<Measure> value) = 0;
     virtual void HandleMeasures(const Measure& value) = 0;
     virtual ~Handler() = default;
 };

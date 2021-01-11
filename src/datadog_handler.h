@@ -18,7 +18,7 @@ public:
     DatadogHandler(const std::string &host, const uint32_t &port) : writer(std::make_unique<DatadogUDPWriter>(host, port)) {}
     explicit DatadogHandler(const std::string &host) : DatadogHandler(host, defaultPort) {}
     explicit DatadogHandler(std::unique_ptr<Writer> writer) : writer(std::move(writer)){};
-    void HandleMeasures(std::unique_ptr<Measure> measure) override;
+    void HandleMeasures(const Measure& measure) override;
 
 private:
     std::unique_ptr<Writer> writer;

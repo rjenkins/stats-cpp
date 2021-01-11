@@ -9,8 +9,8 @@
 class TestHandler : public Handler {
 public:
     TestHandler() = default;
-    void HandleMeasures(std::unique_ptr<Measure> value) override {
-        measures.push_back(std::move(value));
+    void HandleMeasures(const Measure& value) override {
+        measures.push_back(value.clone());
     }
     ~TestHandler() override = default;
     std::vector<std::unique_ptr<Measure>> measures;

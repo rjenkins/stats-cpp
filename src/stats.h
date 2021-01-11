@@ -11,7 +11,7 @@
 // Example:
 //
 // Stats::SetPrefix("my-cool-app");
-// Stats::RegisterHandler(std::move(std::make_unique<DatadogHandler>());
+// Stats::RegisterHandler(std::make_unique<DatadogHandler>());
 // Stats::Incr("cache.hit");
 // Stats::Incr("error", Tag("page", "/foo"));
 // std::vector<Tag> tags;

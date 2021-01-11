@@ -12,7 +12,7 @@
 class PrintHandler : public Handler {
 public:
     PrintHandler() = default;
-    void HandleMeasures(std::unique_ptr<Measure> measure) override;
+    void HandleMeasures(const Measure& measure) override;
 };
 
 

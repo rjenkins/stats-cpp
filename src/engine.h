@@ -113,7 +113,7 @@ public:
     void Observe(const std::string &name, const T &t) {
         Observe(name, t, noTags);
     }
-    // Observers integers or floats, with variadic Tags
+    // Observe integer or float, with variadic Tags
     template<typename T, typename std::enable_if<std::is_arithmetic<T>::value>::type * = nullptr, typename... Ts>
     void Observe(const std::string &name, const T &t, Ts... tags) {
         std::vector<Tag> tv;
@@ -123,7 +123,7 @@ public:
         }
         Observe(name, t, tv);
     }
-    // Observers integers or floats, with vector of Tags
+    // Observer integer or float, with vector of Tags
     template<typename T, typename std::enable_if<std::is_arithmetic<T>::value>::type * = nullptr>
     void Observe(const std::string &name, const T &t, const std::vector<Tag> &tags) {
         measure(system_clock::now(), name, t, Histogram, tags);
@@ -137,33 +137,29 @@ private:
     static const std::vector<Tag> noTags;
 
     // Private Functions
+    // Construct and send an IntegerMeasure to our handlers
     template<typename T, typename std::enable_if<std::is_integral<T>::value>::type * = nullptr>
     void measure(const time_point<high_resolution_clock> &observedTime, const std::string &name, const T &value, const MetricTypes::MetricType &type, const std::vector<Tag> &tags) {
         if (!prefix.empty()) {
-            auto fname = prefix + ".";
-            fname += name;
-            sendMeasure(std::make_unique<IntegerMeasure>(observedTime, fname, type, tags, value));
+            auto fName = prefix + ".";
+            fName += name;
+            sendMeasure(IntegerMeasure(observedTime, fName, type, tags, value));
             return;
         }
-        sendMeasure(std::make_unique<IntegerMeasure>(observedTime, name, type, tags, value));
+        sendMeasure(IntegerMeasure(observedTime, name, type, tags, value));
     }
 
     // Private Functions
+    // Construct and send a DoubleMeasure to our handlers
     template<typename T, typename std::enable_if<std::is_floating_point<T>::value>::type * = nullptr>
     void measure(const time_point<high_resolution_clock> &observedTime, const std::string &name, const T &value, const MetricTypes::MetricType &type, const std::vector<Tag> &tags) {
         if (!prefix.empty()) {
-            auto fname = prefix + ".";
-            fname += name;
-            sendMeasure(std::make_unique<DoubleMeasure>(observedTime, fname, type, tags, value));
+            auto fName = prefix + ".";
+            fName += name;
+            sendMeasure(DoubleMeasure(observedTime, fName, type, tags, value));
             return;
         }
-        sendMeasure(std::make_unique<DoubleMeasure>(observedTime, name, type, tags, value));
-    }
-
-    void sendMeasure(std::unique_ptr<Measure> m) {
-        for (const auto &h : handlers) {
-            h->HandleMeasures(std::move(m));
-        }
+        sendMeasure(DoubleMeasure(observedTime, name, type, tags, value));
     }
 
     void sendMeasure(const Measure& m) {

@@ -10,11 +10,11 @@ const uint32_t DatadogHandler::defaultPort = 8125;
 
 // <METRIC_NAME>:<VALUE>|<TYPE>|@<SAMPLE_RATE>|#<TAG_KEY_1>:<TAG_VALUE_1>,<TAG_2>
 // Example: users.online:1|c|@0.5|#country:china
-void DatadogHandler::HandleMeasures(std::unique_ptr<Measure> measure) {
+void DatadogHandler::HandleMeasures(const Measure& measure) {
     std::ostringstream output;
 
-    output << measure->name << ":" << measure->GetValue();
-    switch (measure->type) {
+    output << measure.name << ":" << measure.GetValue();
+    switch (measure.type) {
         case MetricTypes::Counter:
             output << "|c";
             break;
@@ -26,15 +26,15 @@ void DatadogHandler::HandleMeasures(std::unique_ptr<Measure> measure) {
             break;
     }
 
-    if (measure->rate < 1) {
-        output << "|@" << measure->rate;
+    if (measure.rate < 1) {
+        output << "|@" << measure.rate;
     }
 
-    if (measure->tags.size()) {
+    if (measure.tags.size()) {
         output << "|#";
-        auto tagCount = measure->tags.size();
+        auto tagCount = measure.tags.size();
         for (int i = 0; i < tagCount; i++) {
-            output << measure->tags[i].name << ":" << measure->tags[i].value;
+            output << measure.tags[i].name << ":" << measure.tags[i].value;
             if (tagCount > 1 && i < tagCount - 1) {
                 output << ",";
             }
