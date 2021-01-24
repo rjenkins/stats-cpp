@@ -24,7 +24,7 @@ Buffer::Buffer(Writer &writer, const uint &bufferSize) : writer(writer), bufferS
     }
 }
 void Buffer::Handle(const std::string &data) {
-    auto &b = acquireBuffer();
+    InternalBuffer &b = acquireBuffer();
     std::copy(data.begin(), data.end(), std::back_inserter(b.data));
     if (b.data.size() >= bufferSize) {
         std::string d(b.data.begin(), b.data.end());
@@ -33,16 +33,15 @@ void Buffer::Handle(const std::string &data) {
     }
     b.release();
 }
-
 int Buffer::Flush(const std::string &data) {
     return writer.Write(data);
 }
-InternalBuffer& Buffer::acquireBuffer() {
+InternalBuffer &Buffer::acquireBuffer() {
     int i = 0;
     int n = buffers.size();
     while (true) {
         auto o = offset++ % n;
-        InternalBuffer* b = buffers[o].get();
+        InternalBuffer *b = buffers[o].get();
         if (b->acquire()) {
             return *b;
         }

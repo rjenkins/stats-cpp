@@ -13,7 +13,7 @@
 struct Tag {
 public:
     explicit Tag(const char *name, const char *value) : name(name), value(value) {}
-    explicit Tag(const std::string &name, const std::string &value) : name(std::move(name)), value(std::move(value)) {
+    explicit Tag(std::string name, std::string value) : name(std::move(name)), value(std::move(value)) {
         spdlog::debug("in tag constructor");
     }
     ~Tag() {
