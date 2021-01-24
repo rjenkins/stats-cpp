@@ -7,7 +7,7 @@
 Buffer::Buffer(Writer &writer, const uint &bufferSize, const uint &bufferPoolSize) : writer(writer), bufferSize(bufferSize), bufferPoolSize(bufferPoolSize) {
     buffers.reserve(bufferSize);
     for (int i = 0; i < bufferPoolSize; i++) {
-        buffers.emplace_back();
+        buffers.push_back(std::make_unique<InternalBuffer>());
     }
 }
 Buffer::Buffer(Writer &writer, const uint &bufferSize) : writer(writer), bufferSize(bufferSize) {
@@ -20,10 +20,9 @@ Buffer::Buffer(Writer &writer, const uint &bufferSize) : writer(writer), bufferS
     bufferPoolSize = processor_count * 2;
     buffers.reserve(bufferSize);
     for (int i = 0; i < bufferPoolSize; i++) {
-        buffers.emplace_back();
+        buffers.push_back(std::make_unique<InternalBuffer>());
     }
 }
-
 void Buffer::Handle(const std::string &data) {
     auto &b = acquireBuffer();
     std::copy(data.begin(), data.end(), std::back_inserter(b.data));
@@ -38,22 +37,20 @@ void Buffer::Handle(const std::string &data) {
 int Buffer::Flush(const std::string &data) {
     return writer.Write(data);
 }
-
 InternalBuffer& Buffer::acquireBuffer() {
     int i = 0;
     int n = buffers.size();
     while (true) {
         auto o = offset++ % n;
-        InternalBuffer &b = buffers[o];
-        if (b.acquire()) {
-            return b;
+        InternalBuffer* b = buffers[o].get();
+        if (b->acquire()) {
+            return *b;
         }
         if ((i++ % n) == 0) {
             std::this_thread::yield();
         }
     }
 }
-
 bool InternalBuffer::acquire() {
     uint64_t x = 0;
     return lock.compare_exchange_strong(x, 1);

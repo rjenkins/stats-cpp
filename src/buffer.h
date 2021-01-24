@@ -17,7 +17,6 @@ public:
     InternalBuffer() {
         std::cout << "in buffer constructor" << std::endl;
     }
-    InternalBuffer(const InternalBuffer& other) {}
     std::atomic<uint64_t> lock{};
     std::vector<char> data;
     uint8_t pad[32]{};// padding to avoid false sharing between threads
@@ -39,7 +38,7 @@ private:
     uint bufferPoolSize;
     std::once_flag initialized;
     std::atomic_uint64_t offset{};
-    std::vector<InternalBuffer> buffers;
+    std::vector<std::unique_ptr<InternalBuffer>> buffers;
     InternalBuffer &acquireBuffer();
 };
 
