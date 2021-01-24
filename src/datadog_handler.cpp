@@ -10,11 +10,17 @@ const uint32_t DatadogHandler::defaultPort = 8125;
 
 // <METRIC_NAME>:<VALUE>|<TYPE>|@<SAMPLE_RATE>|#<TAG_KEY_1>:<TAG_VALUE_1>,<TAG_2>
 // Example: users.online:1|c|@0.5|#country:china
-void DatadogHandler::HandleMeasures(const Measure& measure) {
+void DatadogHandler::HandleMeasures(const Measure<int> &measure) {
+    process(measure.name, measure.GetValue(), measure.type, measure.tags, measure.rate);
+}
+void DatadogHandler::HandleMeasures(const Measure<double> &measure) {
+    auto value = measure.GetValue();
+    process(measure.name, measure.GetValue(), measure.type, measure.tags, measure.rate);
+}
+void DatadogHandler::process(const std::string &name, const std::string &value, const MetricType &type, const std::vector<Tag> &tags, const float &rate) {
     std::ostringstream output;
-
-    output << measure.name << ":" << measure.GetValue();
-    switch (measure.type) {
+    output << name << ":" << value;
+    switch (type) {
         case MetricTypes::Counter:
             output << "|c";
             break;
@@ -25,24 +31,23 @@ void DatadogHandler::HandleMeasures(const Measure& measure) {
             output << "|h";
             break;
     }
-
-    if (measure.rate < 1) {
-        output << "|@" << measure.rate;
+    if (rate < 1) {
+        output << "|@" << rate;
     }
-
-    if (measure.tags.size()) {
+    if (tags.size()) {
         output << "|#";
-        auto tagCount = measure.tags.size();
+        auto tagCount = tags.size();
         for (int i = 0; i < tagCount; i++) {
-            output << measure.tags[i].name << ":" << measure.tags[i].value;
+            output << tags[i].name << ":" << tags[i].value;
             if (tagCount > 1 && i < tagCount - 1) {
                 output << ",";
             }
         }
     }
 
-    int ret = writer->Write(output.str());
-    spdlog::debug("writer returned: {} for {}", ret, output.str());
+    buffer->Handle(output.str());
+//    int ret = writer->Write(output.str());
+//    spdlog::debug("writer returned: {} for {}", ret, output.str());
 
     //    if (!global_tags_str.empty()) {
     //        if (!tagging) {

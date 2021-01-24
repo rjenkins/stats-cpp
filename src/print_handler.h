@@ -12,7 +12,8 @@
 class PrintHandler : public Handler {
 public:
     PrintHandler() = default;
-    void HandleMeasures(const Measure& measure) override;
+    void HandleMeasures(const Measure<int>& value) override;
+    void HandleMeasures(const Measure<double>& value) override;
 };
 
 

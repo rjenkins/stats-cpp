@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.13.4)
 project(stats_cpp)
-
+set(CTEST_OUTPUT_ON_FAILURE)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
@@ -12,6 +12,8 @@ enable_testing()
 add_library(stats STATIC
         src/engine.cpp
         src/engine.h
+        src/buffer.h
+        src/buffer.cpp
         src/handler.h
         src/datadog_handler.h
         src/datadog_handler.cpp

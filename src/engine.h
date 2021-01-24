@@ -55,9 +55,9 @@ public:
     template<typename... Ts>
     void Incr(const std::string &name, Ts... tags) {
         std::vector<Tag> tv;
-        for (auto x : {tags...}) {
-            Tag t = static_cast<Tag>(static_cast<const Tag>(x));
-            tv.push_back(t);
+        for (const auto& x : {tags...}) {
+            //Tag t = static_cast<Tag>(static_cast<const Tag>(x));
+            tv.push_back(x);
         }
         measure(system_clock::now(), name, 1, Counter, tv);
     }
@@ -72,9 +72,8 @@ public:
     template<typename T, typename std::enable_if<std::is_arithmetic<T>::value>::type * = nullptr, typename... Ts>
     void Add(const std::string &name, const T &t, Ts... tags) {
         std::vector<Tag> tv;
-        for (auto x : {tags...}) {
-            Tag t = static_cast<Tag>(x);
-            tv.push_back(t);
+        for (const auto& x : {tags...}) {
+            tv.push_back(x);
         }
         Add(name, t, tv);
     }
@@ -95,9 +94,8 @@ public:
     template<typename T, typename std::enable_if<std::is_arithmetic<T>::value>::type * = nullptr, typename... Ts>
     void Set(const std::string &name, const T &t, Ts... tags) {
         std::vector<Tag> tv;
-        for (auto x : {tags...}) {
-            Tag t = static_cast<Tag>(x);
-            tv.push_back(t);
+        for (const auto& x : {tags...}) {
+            tv.push_back(x);
         }
         Set(name, t, tv);
     }
@@ -117,9 +115,8 @@ public:
     template<typename T, typename std::enable_if<std::is_arithmetic<T>::value>::type * = nullptr, typename... Ts>
     void Observe(const std::string &name, const T &t, Ts... tags) {
         std::vector<Tag> tv;
-        for (auto x : {tags...}) {
-            Tag t = static_cast<Tag>(x);
-            tv.push_back(t);
+        for (const auto& x : {tags...}) {
+            tv.push_back(x);
         }
         Observe(name, t, tv);
     }
@@ -137,32 +134,29 @@ private:
     static const std::vector<Tag> noTags;
 
     // Private Functions
-    // Construct and send an IntegerMeasure to our handlers
     template<typename T, typename std::enable_if<std::is_integral<T>::value>::type * = nullptr>
     void measure(const time_point<high_resolution_clock> &observedTime, const std::string &name, const T &value, const MetricTypes::MetricType &type, const std::vector<Tag> &tags) {
         if (!prefix.empty()) {
             auto fName = prefix + ".";
             fName += name;
-            sendMeasure(IntegerMeasure(observedTime, fName, type, tags, value));
+            sendMeasure(Measure<int>(observedTime, fName, type, value, tags));
             return;
         }
-        sendMeasure(IntegerMeasure(observedTime, name, type, tags, value));
+        sendMeasure(Measure<int>(observedTime, name, type, value, tags));
     }
-
-    // Private Functions
-    // Construct and send a DoubleMeasure to our handlers
     template<typename T, typename std::enable_if<std::is_floating_point<T>::value>::type * = nullptr>
     void measure(const time_point<high_resolution_clock> &observedTime, const std::string &name, const T &value, const MetricTypes::MetricType &type, const std::vector<Tag> &tags) {
         if (!prefix.empty()) {
             auto fName = prefix + ".";
             fName += name;
-            sendMeasure(DoubleMeasure(observedTime, fName, type, tags, value));
+            sendMeasure(Measure<double>(observedTime, fName, type, value, tags));
             return;
         }
-        sendMeasure(DoubleMeasure(observedTime, name, type, tags, value));
+        sendMeasure(Measure<double>(observedTime, name, type, value, tags));
     }
 
-    void sendMeasure(const Measure& m) {
+    template<typename T>
+    void sendMeasure(const Measure<T> &m) {
         for (const auto &h : handlers) {
             h->HandleMeasures(m);
         }

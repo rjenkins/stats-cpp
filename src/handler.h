@@ -15,7 +15,8 @@
 
 class Handler {
 public:
-    virtual void HandleMeasures(const Measure& value) = 0;
+    virtual void HandleMeasures(const Measure<int>& value) = 0;
+    virtual void HandleMeasures(const Measure<double>& value) = 0;
     virtual ~Handler() = default;
 };
 

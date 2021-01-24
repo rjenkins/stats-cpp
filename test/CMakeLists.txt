@@ -4,6 +4,7 @@ project(stats_cpp)
 set(BINARY ${CMAKE_PROJECT_NAME}_tst)
 set(TEST_SOURCES
         engine_test.cpp
+        buffer_test.cpp
         test_handler.h
         main.cpp)
 
