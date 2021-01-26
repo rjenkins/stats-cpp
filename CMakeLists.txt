@@ -4,8 +4,23 @@ set(CTEST_OUTPUT_ON_FAILURE)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
-include_directories(src
-        lib/spdlog/include)
+# ---- Dependencies ----
+
+include(cmake/CPM.cmake)
+
+CPMAddPackage(
+        NAME spdlog
+        GITHUB_REPOSITORY gabime/spdlog
+        VERSION 1.7.0
+)
+
+CPMAddPackage(
+        NAME googletest
+        GITHUB_REPOSITORY google/googletest
+        GIT_TAG release-1.8.1
+        VERSION 1.8.1
+        OPTIONS "INSTALL_GTEST OFF" "gtest_force_shared_crt"
+)
 
 enable_testing()
 
@@ -29,8 +44,8 @@ add_library(stats STATIC
         src/writer.h)
 
 add_subdirectory(test)
-add_subdirectory(lib/googletest)
-add_subdirectory(lib/spdlog)
+target_link_libraries(stats spdlog)
+
 
 set(INSTALL_HEADERS src/engine.h
         src/handler.h
@@ -49,6 +64,5 @@ INSTALL(TARGETS stats
         LIBRARY DESTINATION /usr/local/lib
         PUBLIC_HEADER DESTINATION /usr/local/include/stats-cpp)
 
-INSTALL(DIRECTORY lib/spdlog/include/spdlog DESTINATION /usr/local/include/spdlog)
 
 
